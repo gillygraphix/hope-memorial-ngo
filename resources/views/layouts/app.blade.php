@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="overflow-x-hidden">
+<html lang="en" class="overflow-x-hidden scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -45,60 +45,53 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Custom Animation Curve for Apple-like feel */
         .apple-spring {
             transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* HEADER FIXED TRANSITION */
+        #main-header {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                        background-color 0.4s ease,
+                        box-shadow 0.4s ease;
+        }
+
+        /* SCROLL PROGRESS BAR */
+        #scroll-indicator {
+            background: linear-gradient(to right, #0ea5e9, #f97316, #0ea5e9);
+            background-size: 200% 100%;
+            animation: shimmer-bar 3s linear infinite;
+        }
+
+        @keyframes shimmer-bar {
+            0% { background-position: 200% center; }
+            100% { background-position: -200% center; }
         }
     </style>
 </head>
 <body class="antialiased selection:bg-orange-400 selection:text-white">
-
-    {{-- TOP BAR --}}
-    <div class="bg-sky-950 text-sky-100 text-[10px] font-bold py-2.5 px-4 tracking-[0.1em] border-b border-white/5 uppercase overflow-hidden relative z-[60]">
-        <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center max-w-7xl gap-2">
-            <div class="flex space-x-6 items-center">
-                <span class="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3.5 h-3.5 text-orange-400 mr-2 shrink-0">
-                        <path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
-                    </svg>
-                    Arusha, Tanzania
-                </span>
-                <span class="hidden sm:flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3.5 h-3.5 text-orange-400 mr-2 shrink-0">
-                        <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" clip-rule="evenodd" />
-                    </svg>
-                    +255 700 000 000
-                </span>
-            </div>
-            <div class="flex items-center space-x-4">
-                <a href="/dispensary" class="hover:text-orange-400 transition">Clinical Portal</a>
-                <span class="text-sky-800"></span>
-            </div>
-        </div>
-    </div>
-
-    {{-- MAIN HEADER --}}
-    <header class="bg-white/95 backdrop-blur-md border-b border-sky-100 sticky top-0 z-50 shadow-sm relative">
+    
+    {{-- MAIN HEADER - FIXED, HAIBANDUKI JUU --}}
+    <header id="main-header" class="bg-white/95 backdrop-blur-md border-b border-sky-100/50 fixed top-0 left-0 right-0 w-full z-50 shadow-sm">
         <div class="container mx-auto px-4 py-3 flex items-center justify-between max-w-7xl relative z-20">
             
             {{-- LOGO --}}
             <a href="/" class="flex items-center group shrink-0">
                 <img src="{{ asset('images/logo.png') }}" 
-                     alt="Hope Memorial Spark Foundation Logo" 
+                     alt="Hope Memorial Logo" 
                      class="h-12 sm:h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-105">
             </a>
             
             {{-- DESKTOP NAVIGATION --}}
-            <nav class="hidden lg:flex items-center space-x-2">
+            <nav class="hidden lg:flex items-center space-x-1">
                 @php 
                     $navItems = [
                         '/' => 'Home',
                         'foundation' => 'Foundation',
                         'projects' => 'Projects',
                         'dispensary' => 'Clinical',
-                        'donate' => 'Donate', /* Nimerudisha Donate hapa */
+                        'donate' => 'Donate',
                         'news' => 'Updates',
-                        'gallery' => 'Gallery',
                         'contact' => 'Contact',
                     ];
                 @endphp
@@ -132,7 +125,6 @@
 
         {{-- APPLE-STYLE FLOATING MOBILE MENU --}}
         <div id="mobile-menu-wrapper" class="absolute top-[110%] left-4 right-4 z-10 opacity-0 scale-95 -translate-y-4 pointer-events-none transition-all duration-500 apple-spring invisible">
-            
             <nav class="bg-white/90 backdrop-blur-2xl border border-white/60 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] rounded-3xl p-5 overflow-hidden">
                 <ul class="flex flex-col space-y-1">
                     @foreach($navItems as $url => $label)
@@ -152,10 +144,17 @@
                 </ul>
             </nav>
         </div>
+
+        {{-- SCROLL PROGRESS BAR --}}
+        <div id="scroll-indicator" 
+             class="absolute bottom-0 left-0 h-[2.5px] transition-all duration-100 ease-out"
+             style="width: 0%;">
+        </div>
     </header>
 
     {{-- MAIN CONTENT --}}
-    <main class="min-h-[70vh] w-full relative z-0">
+    {{-- padding-top inakompensate fixed header height --}}
+    <main class="min-h-[70vh] w-full relative z-0 pt-[73px] lg:pt-[80px]">
         @yield('content')
     </main>
 
@@ -195,26 +194,16 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                             </svg>
-                            <span>Moshono, Arusha, Tanzania</span>
+                            <span>Mto wa Mbu, Arusha, Tanzania</span>
                         </li>
-                        <li class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-orange-500 mr-4 shrink-0">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                            </svg>
-                            <span>info@hopememorial.org</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-orange-500 mr-4 shrink-0">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.48-4.18-7.076-7.076l1.293-.97c.362-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
-                            </svg>
-                            <span class="font-bold text-white">+255 700 000 000</span>
+                        <li class="flex items-center text-white font-bold">
+                            info@hopememorial.org
                         </li>
                     </ul>
                 </div>
 
                 <div>
                     <h4 class="text-white font-bold uppercase text-[11px] tracking-[0.2em] mb-8 border-l-4 border-sky-500 pl-4">Support Us</h4>
-                    <p class="text-[10px] mb-6 uppercase tracking-widest text-slate-500 font-bold">Join our mission today.</p>
                     <div class="flex flex-col space-y-4">
                         <input type="email" placeholder="EMAIL ADDRESS" class="bg-white/5 border border-white/10 rounded-xl px-5 py-3.5 text-xs font-bold tracking-widest focus:ring-1 focus:ring-sky-500 outline-none text-white transition-all">
                         <button class="bg-sky-600 hover:bg-sky-700 text-white font-black py-4 rounded-xl transition text-[10px] uppercase tracking-[0.25em]">Subscribe</button>
@@ -228,47 +217,74 @@
         </div>
     </footer>
 
-    {{-- APPLE-STYLE MENU LOGIC --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+
+            /* ── MOBILE MENU TOGGLE ── */
             const btn = document.getElementById('menu-toggle');
             const menuWrapper = document.getElementById('mobile-menu-wrapper');
-            
-            // Mistari ya icon
             const line1 = document.getElementById('line-1');
             const line2 = document.getElementById('line-2');
             const line3 = document.getElementById('line-3');
-
             let isMenuOpen = false;
 
             btn.addEventListener('click', function() {
                 isMenuOpen = !isMenuOpen;
-
                 if (isMenuOpen) {
-                    // 1. Animate Icon kuwa "X"
                     line1.classList.add('rotate-45', 'translate-x-[2px]', '-translate-y-[1px]');
-                    line2.classList.add('opacity-0', 'translate-x-2'); // Inasogea kulia na kupotea
+                    line2.classList.add('opacity-0', 'translate-x-2');
                     line3.classList.add('-rotate-45', 'translate-x-[2px]', 'translate-y-[1px]');
-
-                    // 2. Onyesha Menu kwa style ya scale/spring
                     menuWrapper.classList.remove('invisible', 'opacity-0', 'scale-95', '-translate-y-4', 'pointer-events-none');
                     menuWrapper.classList.add('opacity-100', 'scale-100', 'translate-y-0', 'pointer-events-auto');
                 } else {
-                    // 1. Rudisha Icon kuwa mistari 3
                     line1.classList.remove('rotate-45', 'translate-x-[2px]', '-translate-y-[1px]');
                     line2.classList.remove('opacity-0', 'translate-x-2');
                     line3.classList.remove('-rotate-45', 'translate-x-[2px]', 'translate-y-[1px]');
-
-                    // 2. Ficha Menu kwa style ya scale
                     menuWrapper.classList.remove('opacity-100', 'scale-100', 'translate-y-0', 'pointer-events-auto');
                     menuWrapper.classList.add('opacity-0', 'scale-95', '-translate-y-4', 'pointer-events-none');
-                    
-                    // Ngoja animation iishe ndio uifanye invisible (ili isiharibu transition)
-                    setTimeout(() => {
-                        if(!isMenuOpen) menuWrapper.classList.add('invisible');
-                    }, 500);
+                    setTimeout(() => { if (!isMenuOpen) menuWrapper.classList.add('invisible'); }, 500);
                 }
             });
+
+            /* ── SMART SCROLL EFFECTS ── */
+            const header = document.getElementById('main-header');
+            const scrollBar = document.getElementById('scroll-indicator');
+            let lastScroll = 0;
+
+            window.addEventListener('scroll', function () {
+                const currentScroll = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+                /* Progress bar width */
+                const scrollPercent = docHeight > 0 ? (currentScroll / docHeight) * 100 : 0;
+                scrollBar.style.width = scrollPercent.toFixed(1) + '%';
+
+                /* Scrolled-down glass style */
+                if (currentScroll > 60) {
+                    header.classList.add('!bg-white/80', '!shadow-md');
+                    header.classList.remove('shadow-sm');
+                } else {
+                    header.classList.remove('!bg-white/80', '!shadow-md');
+                    header.classList.add('shadow-sm');
+                }
+
+                /* Hide on scroll DOWN / show on scroll UP */
+                if (currentScroll > 200) {
+                    if (currentScroll > lastScroll + 8) {
+                        /* Scrolling DOWN — ficha header */
+                        header.style.transform = 'translateY(-100%)';
+                        /* Funga mobile menu ukiwa opened */
+                        if (isMenuOpen) btn.click();
+                    } else if (currentScroll < lastScroll - 4) {
+                        /* Scrolling UP — onyesha header */
+                        header.style.transform = 'translateY(0)';
+                    }
+                } else {
+                    header.style.transform = 'translateY(0)';
+                }
+
+                lastScroll = currentScroll <= 0 ? 0 : currentScroll;
+            }, { passive: true });
         });
     </script>
 </body>
