@@ -3,6 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    {{-- ========================================== --}}
+    {{-- PWA META TAGS (APP ICON & INSTALLATION) --}}
+    {{-- ========================================== --}}
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#ea580c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="/images/icon-192x192.png">
+
     <title>Hope Memorial Spark Foundation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -125,9 +135,47 @@
             0%   { transform: scale(1); opacity: 0.7; }
             100% { transform: scale(1.55); opacity: 0; }
         }
+
+        /* ========================================== */
+        /* LOADING SCREEN STYLES (MWENDO WA DUARA) */
+        /* ========================================== */
+        #app-loader {
+            position: fixed; inset: 0; z-index: 99999; background-color: #0f172a;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+        }
+        .spinner {
+            width: 50px; height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: #ea580c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .loader-text {
+            color: white; margin-top: 20px; font-size: 12px; font-weight: 800;
+            letter-spacing: 0.3em; text-transform: uppercase; animation: pulse 2s infinite;
+        }
+
+        /* ========================================== */
+        /* FICHA BUTTON YA INSTALL IKIWA NDANI YA APP */
+        /* ========================================== */
+        @media all and (display-mode: standalone) {
+            #installAppBtn {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-orange-400 selection:text-white">
+
+    {{-- ========================================== --}}
+    {{-- LOADING SCREEN HTML --}}
+    {{-- ========================================== --}}
+    <div id="app-loader">
+        <div class="spinner"></div>
+        <div class="loader-text">Loading Hope...</div>
+    </div>
     
     {{-- MAIN HEADER - FIXED, HAIBANDUKI JUU --}}
     <header id="main-header" class="bg-white/95 backdrop-blur-md border-b border-sky-100/50 fixed top-0 left-0 right-0 w-full z-50 shadow-sm">
@@ -211,6 +259,15 @@
         </div>
     </header>
 
+    {{-- ============================================================ --}}
+    {{-- INSTALL APP BUTTON (IMEREKEBISHWA KWA AJILI YA SIMU)         --}}
+    {{-- ============================================================ --}}
+    {{-- Imepelekwa katikati (left-1/2 -translate-x-1/2) na juu kidogo (bottom-24) kwa simu --}}
+    <button id="installAppBtn" class="hidden items-center justify-center fixed bottom-24 left-1/2 -translate-x-1/2 lg:translate-x-0 lg:bottom-10 lg:left-10 z-[9998] bg-sky-600 hover:bg-sky-700 text-white font-black text-[12px] uppercase tracking-widest px-8 py-4 rounded-full shadow-[0_10px_30px_rgba(2,132,199,0.5)] transition-all duration-300 gap-3 border border-sky-400 hover:-translate-y-1" aria-label="Install App">
+        <svg class="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        <span class="whitespace-nowrap">Install App</span>
+    </button>
+
     {{-- BACK TO TOP BUTTON --}}
     <button id="back-to-top" aria-label="Back to top" title="Back to top">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" 
@@ -221,7 +278,6 @@
     </button>
 
     {{-- MAIN CONTENT --}}
-    {{-- padding-top inakompensate fixed header height --}}
     <main class="min-h-[70vh] w-full relative z-0 pt-[73px] lg:pt-[80px]">
         @yield('content')
     </main>
@@ -286,6 +342,80 @@
     </footer>
 
     <script>
+        /* ========================================== */
+        /* 1. ONDOA LOADING SCREEN IKIISHA KULOAD     */
+        /* ========================================== */
+        window.addEventListener('load', function() {
+            const loader = document.getElementById('app-loader');
+            if(loader) {
+                setTimeout(() => {
+                    loader.style.opacity = '0';
+                    setTimeout(() => {
+                        loader.style.visibility = 'hidden';
+                    }, 500);
+                }, 300);
+            }
+        });
+
+        /* ========================================== */
+        /* 2. REGISTER SERVICE WORKER (PWA)           */
+        /* ========================================== */
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                .then(registration => {
+                    console.log('ServiceWorker registered:', registration.scope);
+                })
+                .catch(err => {
+                    console.log('ServiceWorker registration failed:', err);
+                });
+            });
+        }
+
+        /* ========================================== */
+        /* 3. PWA INSTALL BUTTON LOGIC (IMEREKEBISHWA)*/
+        /* ========================================== */
+        let deferredPrompt;
+        const installAppBtn = document.getElementById('installAppBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Zuia popup ya asili ya Google
+            e.preventDefault();
+            // Hifadhi tukio ili tulitumie baadaye
+            deferredPrompt = e;
+            // Onyesha Kitufe chetu cha "Install App" kwa usahihi
+            installAppBtn.classList.remove('hidden');
+            installAppBtn.classList.add('flex');
+            console.log('Install prompt is ready!');
+        });
+
+        installAppBtn.addEventListener('click', async () => {
+            if (deferredPrompt !== null) {
+                // Onyesha popup ya kuinstall
+                deferredPrompt.prompt();
+                // Subiri majibu ya mtumiaji
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('Mtumiaji amekubali kuinstall App');
+                    // Ficha kitufe akishakubali
+                    installAppBtn.classList.add('hidden');
+                    installAppBtn.classList.remove('flex');
+                }
+                deferredPrompt = null;
+            }
+        });
+
+        // Ikiwa app isha-installiwa, ficha kitufe
+        window.addEventListener('appinstalled', () => {
+            installAppBtn.classList.add('hidden');
+            installAppBtn.classList.remove('flex');
+            deferredPrompt = null;
+            console.log('PWA Imefanikiwa kuinstalliwa');
+        });
+
+        /* ========================================== */
+        /* 4. ORIGINAL JAVASCRIPT YAKO                */
+        /* ========================================== */
         document.addEventListener('DOMContentLoaded', function() {
 
             /* ── MOBILE MENU TOGGLE ── */

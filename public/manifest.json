@@ -1,0 +1,22 @@
+{
+  "name": "Hope Memorial Spark Foundation",
+  "short_name": "Hope Memorial",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#082f49",
+  "theme_color": "#ea580c",
+  "description": "Improving maternal and child health in Tanzania.",
+  "icons": [
+    {
+      "src": "/images/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+    
+  ]
+}
