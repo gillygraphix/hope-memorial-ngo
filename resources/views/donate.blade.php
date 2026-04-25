@@ -3,28 +3,29 @@
 @section('content')
 
 {{-- ============================================================ --}}
-{{-- URGENT HERO --}}
+{{-- URGENT HERO (UPDATED NA DESIGN YA NEWS/UPDATES) --}}
 {{-- ============================================================ --}}
-<section class="relative bg-slate-900 text-white overflow-hidden flex items-center min-h-[60vh] py-32">
+<section class="relative bg-sky-950 text-white overflow-hidden flex items-center min-h-[60vh] py-32">
     
+    {{-- ------------------------------------------------------------ --}}
     {{-- BACKGROUND IMAGE LAYER --}}
+    {{-- ------------------------------------------------------------ --}}
     <div class="absolute inset-0 z-0">
         <img src="{{ asset('images/donate-bg.jpg') }}" 
              alt="Donate Background" 
              class="w-full h-full object-cover">
              
-        {{-- Gradient Overlay --}}
-        <div class="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-slate-900/90 to-transparent"></div>
+        {{-- Gradient Overlay: Giza kushoto ili maneno yasomeke, uwazi kulia picha ionekane --}}
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-sky-950/80 to-transparent"></div>
     </div>
+    {{-- ------------------------------------------------------------ --}}
 
-    {{-- Background Pattern & Glow --}}
+    {{-- Background Pattern --}}
     <div class="absolute inset-0 opacity-10 z-10 pointer-events-none">
         <div class="absolute inset-0" style="background-image: radial-gradient(circle, #ffffff 1px, transparent 1px); background-size: 40px 40px;"></div>
     </div>
-    <div class="absolute top-0 left-0 w-full h-full pointer-events-none z-10">
-        <div class="absolute top-20 left-10 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-20 right-10 w-72 h-72 bg-sky-500/20 rounded-full blur-3xl"></div>
-    </div>
+    
+    <div class="absolute top-0 right-0 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none z-10"></div>
     
     {{-- Content Container --}}
     <div class="container mx-auto px-4 max-w-7xl relative z-20">
@@ -36,7 +37,7 @@
             
             <h1 class="text-5xl sm:text-7xl font-black tracking-normal leading-snug mb-6 drop-shadow-lg">
                 Before Another<br>
-                <span class="text-orange-400">Life Is Lost.</span>
+                <span class="text-sky-400">Life Is Lost.</span>
             </h1>
             
             <p class="text-sky-100 text-xl font-light leading-relaxed mb-10 drop-shadow-md">

@@ -90,6 +90,7 @@
                         'foundation' => 'Foundation',
                         'projects' => 'Projects',
                         'dispensary' => 'Clinical',
+                        'gallery' => 'Gallery', // NIMEIRUDISHA GALLERY HAPA
                         'donate' => 'Donate',
                         'news' => 'Updates',
                         'contact' => 'Contact',
@@ -98,7 +99,7 @@
 
                 @foreach($navItems as $url => $label)
                     <a href="{{ $url == '/' ? '/' : '/'.$url }}" 
-                       class="px-4 py-2 text-[11px] font-bold uppercase tracking-widest transition-colors duration-300 rounded-full {{ request()->is($url == '/' ? '/' : $url) ? 'bg-sky-50 text-sky-600' : 'text-slate-500 hover:text-sky-600 hover:bg-slate-50' }}">
+                        class="px-4 py-2 text-[11px] font-bold uppercase tracking-widest transition-colors duration-300 rounded-full {{ request()->is($url == '/' ? '/' : $url) ? 'bg-sky-50 text-sky-600' : 'text-slate-500 hover:text-sky-600 hover:bg-slate-50' }}">
                         {{ $label }}
                     </a>
                 @endforeach

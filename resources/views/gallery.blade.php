@@ -3,30 +3,58 @@
 @section('content')
 
 {{-- ============================================================ --}}
+{{-- PHP LOGIC: KUSOMA PICHA AUTOMATICALLY KUTOKA KWENYE MAFOLDA --}}
+{{-- ============================================================ --}}
+@php
+    $categories = [
+        'clinical' => 'Clinical Work',
+        'community' => 'Community Outreach',
+        'training' => 'Training',
+        'events' => 'Events',
+        'team' => 'Team'
+    ];
+    
+    $galleryImages = [];
+    
+    foreach($categories as $folder => $label) {
+        $path = public_path('images/gallery/' . $folder);
+        // Kama folda lipo, soma picha zote ndani yake
+        if(\Illuminate\Support\Facades\File::exists($path)) {
+            $files = \Illuminate\Support\Facades\File::files($path);
+            foreach($files as $file) {
+                $ext = strtolower($file->getExtension());
+                // Hakikisha ni picha pekee
+                if(in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
+                    $galleryImages[] = [
+                        'url' => asset('images/gallery/' . $folder . '/' . $file->getFilename()),
+                        'category' => $folder,
+                        'label' => $label,
+                        'filename' => $file->getFilename()
+                    ];
+                }
+            }
+        }
+    }
+    
+    // Changanya picha kidogo (optional) ili 'All' iwe na muonekano mzuri
+    shuffle($galleryImages);
+@endphp
+
+{{-- ============================================================ --}}
 {{-- PAGE HERO --}}
 {{-- ============================================================ --}}
 <section class="relative bg-sky-950 text-white overflow-hidden flex items-center min-h-[50vh] py-28">
-    
-    {{-- ------------------------------------------------------------ --}}
-    {{-- BACKGROUND IMAGE LAYER --}}
-    {{-- ------------------------------------------------------------ --}}
     <div class="absolute inset-0 z-0">
-        {{-- Badilisha hapa kuweka picha yako. Mfano: src="{{ asset('images/gallery-bg.jpg') }}" --}}
         <img src="{{ asset('images/gallery-bg.jpg') }}" 
              alt="Gallery Background" 
              class="w-full h-full object-cover">
-             
-        {{-- Gradient Overlay: Giza kushoto ili maneno yasomeke, uwazi kulia picha ionekane --}}
         <div class="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-sky-950/80 to-transparent"></div>
     </div>
-    {{-- ------------------------------------------------------------ --}}
 
-    {{-- Background Pattern --}}
     <div class="absolute inset-0 opacity-10 z-10 pointer-events-none">
         <div class="absolute inset-0" style="background-image: radial-gradient(circle, #ffffff 1px, transparent 1px); background-size: 40px 40px;"></div>
     </div>
     
-    {{-- Content Container --}}
     <div class="container mx-auto px-4 max-w-7xl relative z-20">
         <div class="max-w-3xl">
             <p class="text-[11px] font-black uppercase tracking-[0.3em] text-orange-400 mb-4 drop-shadow-md">Visual Stories</p>
@@ -42,47 +70,61 @@
     </div>
 </section>
 
-
 {{-- ============================================================ --}}
-{{-- GALLERY GRID --}}
+{{-- GALLERY GRID & FILTERS (MASONRY 4 COLUMNS) --}}
 {{-- ============================================================ --}}
-<section class="py-28 bg-white">
+<section class="py-28 bg-white min-h-[60vh]">
     <div class="container mx-auto px-4 max-w-7xl">
 
-        {{-- Filter Tabs (optional, for future use) --}}
-        <div class="flex flex-wrap gap-3 mb-12">
-            @php
-                $categories = ['All', 'Clinical Work', 'Community Outreach', 'Training', 'Events', 'Team'];
-            @endphp
-            @foreach($categories as $cat)
-            <button class="text-[11px] font-black uppercase tracking-widest px-6 py-3 rounded-full border {{ $loop->first ? 'bg-sky-600 text-white border-sky-600 shadow-md' : 'bg-white text-slate-500 border-slate-200 hover:border-sky-300 hover:text-sky-600' }} transition-all duration-200">
-                {{ $cat }}
+        {{-- Filter Tabs --}}
+        <div class="flex flex-wrap justify-center sm:justify-start gap-3 mb-12" id="gallery-filters">
+            <button data-filter="all" class="filter-btn active text-[11px] font-black uppercase tracking-widest px-6 py-3 rounded-full border bg-sky-600 text-white border-sky-600 shadow-md transition-all duration-200">
+                All
+            </button>
+            @foreach($categories as $key => $label)
+            <button data-filter="{{ $key }}" class="filter-btn text-[11px] font-black uppercase tracking-widest px-6 py-3 rounded-full border bg-white text-slate-500 border-slate-200 hover:border-sky-300 hover:text-sky-600 transition-all duration-200">
+                {{ $label }}
             </button>
             @endforeach
         </div>
 
         {{-- Gallery Images --}}
-        @if(isset($images) && count($images) > 0)
-            <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-                @foreach($images as $image)
-                <div class="break-inside-avoid group relative overflow-hidden rounded-2xl cursor-pointer bg-slate-100 shadow-sm hover:shadow-lg transition-shadow duration-300">
-                    <img
-                        src="{{ $image->url }}"
-                        alt="{{ $image->caption ?? 'Hope Memorial Spark Foundation' }}"
-                        class="w-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                    >
-                    @if($image->caption)
-                    <div class="absolute inset-0 bg-gradient-to-t from-sky-950/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                        <p class="text-white font-bold text-sm leading-relaxed">{{ $image->caption }}</p>
+        @if(count($galleryImages) > 0)
+            {{-- Hapa tumeweka columns-4 kwa kioo kikubwa, columns-3 kwa kati, na columns-2 kwa simu --}}
+            <div class="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4" id="gallery-grid">
+                @foreach($galleryImages as $image)
+                <div class="gallery-item break-inside-avoid relative overflow-hidden rounded-2xl cursor-pointer bg-slate-100 shadow-sm hover:shadow-lg transition-all duration-500 transform scale-100 group" 
+                     data-category="{{ $image['category'] }}"
+                     data-url="{{ $image['url'] }}"
+                     data-filename="{{ $image['filename'] }}"
+                     data-label="{{ $image['label'] }}"
+                     onclick="openLightbox(this)">
+                    
+                    {{-- Picha hazilazimishwi kuwa mraba, zinafuata urefu wake wa asili --}}
+                    <img src="{{ $image['url'] }}" 
+                         alt="{{ $image['label'] }}" 
+                         class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700" 
+                         loading="lazy">
+                    
+                    {{-- Hover Overlay yenye Icon ya Ku-zoom --}}
+                    <div class="absolute inset-0 bg-sky-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
+                        <div class="w-12 h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/50">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                        </div>
                     </div>
-                    @endif
+                    
+                    {{-- Category Tag kwenye kona --}}
+                    <div class="absolute bottom-4 left-4 pointer-events-none">
+                        <span class="bg-slate-900/80 backdrop-blur-sm text-white text-[9px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest shadow-md">
+                            {{ $image['label'] }}
+                        </span>
+                    </div>
                 </div>
                 @endforeach
             </div>
 
         @else
-            {{-- Empty State --}}
+            {{-- Empty State (Ikikosa picha kwenye mafolda) --}}
             <div class="text-center py-20 space-y-6 bg-slate-50 rounded-3xl border border-slate-100">
                 <div class="flex justify-center text-slate-300">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24">
@@ -92,57 +134,190 @@
                 <h3 class="text-3xl font-black text-slate-700 tracking-normal leading-snug">Gallery Coming Soon</h3>
                 <p class="text-slate-500 max-w-md mx-auto leading-relaxed text-lg font-light">
                     Photos and visual stories from our programs, clinical work, and community outreach 
-                    will be shared here. Check back soon.
+                    will be shared here.
                 </p>
-
-                {{-- Placeholder Grid for visual appeal --}}
-                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-12 max-w-4xl mx-auto px-6">
-                    @php
-                        $placeholders = [
-                            ['icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />', 'label' => 'Antenatal Care'],
-                            ['icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" />', 'label' => 'The Dispensary'],
-                            ['icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />', 'label' => 'Postnatal Support'],
-                            ['icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />', 'label' => 'Mobile Clinics'],
-                            ['icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 010 3.46" />', 'label' => 'Community Outreach'],
-                            ['icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />', 'label' => 'CHW Training'],
-                            ['icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />', 'label' => 'Our Team'],
-                            ['icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />', 'label' => 'Monduli District'],
-                        ];
-                    @endphp
-                    @foreach($placeholders as $ph)
-                    <div class="aspect-square bg-white border border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center space-y-4 hover:border-sky-300 hover:bg-sky-50 transition-all duration-300 shadow-sm">
-                        <div class="text-sky-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
-                                {!! $ph['icon'] !!}
-                            </svg>
-                        </div>
-                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 text-center px-2">{{ $ph['label'] }}</p>
-                    </div>
-                    @endforeach
-                </div>
             </div>
         @endif
 
     </div>
 </section>
 
+{{-- ============================================================ --}}
+{{-- LIGHTBOX MODAL (Picha Ikifunguliwa na Navigation) --}}
+{{-- ============================================================ --}}
+<div id="lightbox" class="fixed inset-0 z-[100] bg-slate-950/95 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 flex-col items-center justify-center p-4 sm:p-8">
+    
+    {{-- Close Button (X ya Juu) --}}
+    <button onclick="closeLightbox()" class="absolute top-6 right-6 text-slate-400 hover:text-white transition-colors bg-white/10 hover:bg-white/20 p-3 rounded-full backdrop-blur-md z-50">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+
+    {{-- Previous Button --}}
+    <button onclick="prevImage(event)" class="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 text-white/70 hover:text-white bg-slate-900/50 hover:bg-sky-600 p-3 sm:p-4 rounded-full backdrop-blur-md transition-all z-50 shadow-lg">
+        <svg class="w-6 h-6 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+    </button>
+
+    {{-- Next Button --}}
+    <button onclick="nextImage(event)" class="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 text-white/70 hover:text-white bg-slate-900/50 hover:bg-sky-600 p-3 sm:p-4 rounded-full backdrop-blur-md transition-all z-50 shadow-lg">
+        <svg class="w-6 h-6 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+    </button>
+
+    {{-- Main Image Display --}}
+    <div class="relative max-w-5xl w-full flex flex-col items-center mt-8">
+        <img id="lightbox-img" src="" alt="Gallery Image" class="max-h-[60vh] md:max-h-[75vh] w-auto max-w-full object-contain rounded-xl shadow-2xl shadow-sky-900/20 mb-8 border border-white/10 transition-opacity duration-200">
+        
+        {{-- Actions Container --}}
+        <div class="flex flex-wrap items-center justify-center gap-4 w-full px-12">
+            
+            {{-- Button ya Kurudi --}}
+            <button onclick="closeLightbox()" class="flex items-center bg-slate-800 hover:bg-slate-700 text-white font-black text-[11px] uppercase tracking-widest px-6 py-3.5 rounded-full transition duration-300 border border-slate-700">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                Back
+            </button>
+            
+            {{-- Label inaonekana Desktop tu --}}
+            <span id="lightbox-label" class="hidden sm:inline-block text-sky-300 text-[10px] font-black uppercase tracking-widest bg-sky-900/50 border border-sky-800 px-5 py-3.5 rounded-full shadow-inner"></span>
+            
+            {{-- Download Button --}}
+            <a id="download-btn" href="" download class="flex items-center bg-orange-500 hover:bg-orange-600 text-white font-black text-[11px] uppercase tracking-widest px-6 py-3.5 rounded-full transition duration-300 shadow-lg shadow-orange-500/20">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                Download Image
+            </a>
+            
+        </div>
+    </div>
+</div>
 
 {{-- ============================================================ --}}
-{{-- SUBMIT PHOTOS CTA (if applicable) --}}
+{{-- JAVASCRIPT KWA AJILI YA FILTERS NA LIGHTBOX --}}
 {{-- ============================================================ --}}
-<section class="py-24 bg-sky-950 text-white border-t border-sky-900">
-    <div class="container mx-auto px-4 max-w-4xl text-center">
-        <p class="text-[11px] font-black uppercase tracking-[0.3em] text-orange-400 mb-4">Share Your Story</p>
-        <h2 class="text-4xl font-black tracking-normal leading-snug mb-6">Have Photos From Our Programs?</h2>
-        <p class="text-sky-300 mb-10 leading-relaxed text-lg font-light">
-            If you are a community partner, health worker, or program participant with photos to share, 
-            we would love to feature your story here.
-        </p>
-        <a href="/contact" class="inline-flex items-center bg-orange-500 hover:bg-orange-600 text-white font-black text-[12px] uppercase tracking-widest px-10 py-5 rounded-full transition duration-300 shadow-xl shadow-orange-500/30">
-            Contact Us
-            <svg class="ml-3 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-        </a>
-    </div>
-</section>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- 1. FILTERING LOGIC ---
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        const activeClasses = ['bg-sky-600', 'text-white', 'border-sky-600', 'shadow-md', 'active'];
+        const inactiveClasses = ['bg-white', 'text-slate-500', 'border-slate-200', 'hover:border-sky-300', 'hover:text-sky-600'];
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.classList.remove(...activeClasses);
+                    b.classList.add(...inactiveClasses);
+                });
+                
+                btn.classList.remove(...inactiveClasses);
+                btn.classList.add(...activeClasses);
+
+                const filterValue = btn.getAttribute('data-filter');
+
+                galleryItems.forEach(item => {
+                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                        item.style.display = 'block';
+                        setTimeout(() => {
+                            item.classList.remove('scale-95', 'opacity-0');
+                            item.classList.add('scale-100', 'opacity-100');
+                        }, 50);
+                    } else {
+                        item.classList.remove('scale-100', 'opacity-100');
+                        item.classList.add('scale-95', 'opacity-0');
+                        setTimeout(() => {
+                            item.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+        // --- 2. LIGHTBOX & SLIDER LOGIC ---
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxLabel = document.getElementById('lightbox-label');
+        const downloadBtn = document.getElementById('download-btn');
+        
+        let currentVisibleItems = [];
+        let currentIndex = 0;
+
+        // Kufungua Lightbox
+        window.openLightbox = function(element) {
+            // Chukua picha zote zinazoonekana sasa hivi kulingana na filter
+            currentVisibleItems = Array.from(document.querySelectorAll('.gallery-item')).filter(item => item.style.display !== 'none');
+            
+            // Tafuta hii picha tuliyobonyeza ni ya ngapi kwenye list
+            currentIndex = currentVisibleItems.indexOf(element);
+
+            updateLightboxContent();
+
+            lightbox.classList.remove('hidden');
+            setTimeout(() => {
+                lightbox.classList.remove('opacity-0');
+                lightbox.classList.add('opacity-100', 'flex');
+            }, 10);
+            
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        // Ku-update taarifa zinazoonekana ndani ya Lightbox
+        function updateLightboxContent() {
+            if(currentVisibleItems.length === 0) return;
+            
+            const item = currentVisibleItems[currentIndex];
+            
+            // Weka effect kidogo picha inapobadilika
+            lightboxImg.style.opacity = '0.5';
+            
+            setTimeout(() => {
+                lightboxImg.src = item.dataset.url;
+                lightboxLabel.textContent = item.dataset.label;
+                downloadBtn.href = item.dataset.url;
+                downloadBtn.download = item.dataset.filename;
+                lightboxImg.style.opacity = '1';
+            }, 150);
+        }
+
+        // Kwenda Picha Inayofuata (Next)
+        window.nextImage = function(e) {
+            if(e) e.stopPropagation();
+            currentIndex = (currentIndex + 1) % currentVisibleItems.length;
+            updateLightboxContent();
+        }
+
+        // Kurudi Picha Iliyopita (Previous)
+        window.prevImage = function(e) {
+            if(e) e.stopPropagation();
+            currentIndex = (currentIndex - 1 + currentVisibleItems.length) % currentVisibleItems.length;
+            updateLightboxContent();
+        }
+
+        // Kufunga Lightbox
+        window.closeLightbox = function() {
+            lightbox.classList.remove('opacity-100');
+            lightbox.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                lightbox.classList.add('hidden');
+                lightbox.classList.remove('flex');
+                lightboxImg.src = '';
+            }, 300);
+            
+            document.body.style.overflow = 'auto'; 
+        }
+
+        // Funga ukiclick pembeni ya picha
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        // Kutumia Keyboard Buttons (Escape, Left, Right)
+        document.addEventListener('keydown', (e) => {
+            if (lightbox.classList.contains('hidden')) return;
+            
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') nextImage();
+            if (e.key === 'ArrowLeft') prevImage();
+        });
+    });
+</script>
 
 @endsection

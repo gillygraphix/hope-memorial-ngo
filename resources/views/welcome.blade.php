@@ -12,7 +12,7 @@
     {{-- ------------------------------------------------------------ --}}
     <div class="absolute inset-0 z-0">
         {{-- Badilisha hapa kuweka picha yako --}}
-        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070&auto=format&fit=crop"
+        <img src="{{ asset('images/home-bg.jpg') }}"
              alt="Background"
              class="w-full h-full object-cover">
 
@@ -47,7 +47,7 @@
 
             <p class="text-sky-100 text-xl leading-relaxed max-w-3xl mx-auto font-light backdrop-blur-sm bg-black/10 rounded-2xl p-6 border border-white/5 drop-shadow-sm">
                 Hope Memorial Spark Foundation is dedicated to eliminating preventable maternal deaths
-                through the SPARK system — reaching mothers before risk begins, sustaining care through
+                through the SPARK system,reaching mothers before risk begins, sustaining care through
                 pregnancy, and protecting life after delivery.
             </p>
 
