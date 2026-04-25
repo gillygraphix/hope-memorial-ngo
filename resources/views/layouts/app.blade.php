@@ -67,6 +67,64 @@
             0% { background-position: 200% center; }
             100% { background-position: -200% center; }
         }
+
+        /* ── BACK TO TOP BUTTON ── */
+        #back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 1.75rem;
+            z-index: 999;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.45), 0 2px 8px rgba(0,0,0,0.12);
+            opacity: 0;
+            transform: translateY(20px) scale(0.85);
+            pointer-events: none;
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                        background 0.3s ease,
+                        box-shadow 0.3s ease;
+        }
+
+        #back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        #back-to-top:hover {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            box-shadow: 0 10px 30px rgba(249, 115, 22, 0.45), 0 2px 8px rgba(0,0,0,0.15);
+            transform: translateY(-3px) scale(1.08);
+        }
+
+        #back-to-top:active {
+            transform: translateY(0) scale(0.96);
+        }
+
+        /* Pulse ring animation */
+        #back-to-top::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 2px solid rgba(14, 165, 233, 0.4);
+            animation: btt-pulse 2.5s ease-out infinite;
+            opacity: 0;
+        }
+
+        @keyframes btt-pulse {
+            0%   { transform: scale(1); opacity: 0.7; }
+            100% { transform: scale(1.55); opacity: 0; }
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-orange-400 selection:text-white">
@@ -90,7 +148,7 @@
                         'foundation' => 'Foundation',
                         'projects' => 'Projects',
                         'dispensary' => 'Clinical',
-                        'gallery' => 'Gallery', // NIMEIRUDISHA GALLERY HAPA
+                        'gallery' => 'Gallery',
                         'donate' => 'Donate',
                         'news' => 'Updates',
                         'contact' => 'Contact',
@@ -152,6 +210,15 @@
              style="width: 0%;">
         </div>
     </header>
+
+    {{-- BACK TO TOP BUTTON --}}
+    <button id="back-to-top" aria-label="Back to top" title="Back to top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" 
+             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" 
+             stroke-linejoin="round" width="22" height="22">
+            <path d="M18 15l-6-6-6 6"/>
+        </svg>
+    </button>
 
     {{-- MAIN CONTENT --}}
     {{-- padding-top inakompensate fixed header height --}}
@@ -250,6 +317,7 @@
             /* ── SMART SCROLL EFFECTS ── */
             const header = document.getElementById('main-header');
             const scrollBar = document.getElementById('scroll-indicator');
+            const backToTop = document.getElementById('back-to-top');
             let lastScroll = 0;
 
             window.addEventListener('scroll', function () {
@@ -259,6 +327,13 @@
                 /* Progress bar width */
                 const scrollPercent = docHeight > 0 ? (currentScroll / docHeight) * 100 : 0;
                 scrollBar.style.width = scrollPercent.toFixed(1) + '%';
+
+                /* ── BACK TO TOP visibility ── */
+                if (currentScroll > 400) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
 
                 /* Scrolled-down glass style */
                 if (currentScroll > 60) {
@@ -286,6 +361,11 @@
 
                 lastScroll = currentScroll <= 0 ? 0 : currentScroll;
             }, { passive: true });
+
+            /* ── BACK TO TOP click handler ── */
+            backToTop.addEventListener('click', function () {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
         });
     </script>
 </body>
