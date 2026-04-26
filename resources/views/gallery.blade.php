@@ -3,7 +3,7 @@
 @section('content')
 
 {{-- ============================================================ --}}
-{{-- PHP LOGIC: KUSOMA PICHA KWA KUTUMIA CACHE (SUPER FAST) --}}
+{{-- PHP LOGIC: KUSOMA PICHA LIVE (BILA CACHE) --}}
 {{-- ============================================================ --}}
 @php
     $categories = [
@@ -14,32 +14,30 @@
         'team' => 'Team'
     ];
     
-    // TUNAWEKA CACHE YA DAKIKA 5 (Sekunde 300) KUZUIA SERVER KUZIDIWA NA ERROR YA 60 SECS
-    // Nimetumia 'DirectoryIterator' ambayo inasoma maelfu ya picha kwa sekunde 1 tu.
-    $galleryImages = \Illuminate\Support\Facades\Cache::remember('fast_gallery_images_v1', 300, function () use ($categories) {
-        $images = [];
-        foreach($categories as $folder => $label) {
-            $path = public_path('images/gallery/' . $folder);
-            
-            if(is_dir($path)) {
-                $dir = new \DirectoryIterator($path);
-                foreach ($dir as $fileinfo) {
-                    if (!$fileinfo->isDot() && !$fileinfo->isDir()) {
-                        $ext = strtolower($fileinfo->getExtension());
-                        if(in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
-                            $images[] = [
-                                'url' => asset('images/gallery/' . $folder . '/' . $fileinfo->getFilename()),
-                                'category' => $folder,
-                                'label' => $label,
-                                'filename' => $fileinfo->getFilename()
-                            ];
-                        }
+    // TUMEONDOA CACHE ILI PICHA ZISOMEKE HAPO HAPO (LIVE)
+    // Lakini tumebakiza 'DirectoryIterator' ili kuzuia Error ya 60 Seconds
+    $galleryImages = [];
+    
+    foreach($categories as $folder => $label) {
+        $path = public_path('images/gallery/' . $folder);
+        
+        if(is_dir($path)) {
+            $dir = new \DirectoryIterator($path);
+            foreach ($dir as $fileinfo) {
+                if (!$fileinfo->isDot() && !$fileinfo->isDir()) {
+                    $ext = strtolower($fileinfo->getExtension());
+                    if(in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
+                        $galleryImages[] = [
+                            'url' => asset('images/gallery/' . $folder . '/' . $fileinfo->getFilename()),
+                            'category' => $folder,
+                            'label' => $label,
+                            'filename' => $fileinfo->getFilename()
+                        ];
                     }
                 }
             }
         }
-        return $images;
-    });
+    }
     
     // Tunacopy list na kuichanganya (shuffle) ili muonekano uwe mzuri kwa "ALL"
     $displayImages = $galleryImages;
