@@ -8,14 +8,9 @@
 <section class="relative bg-sky-950 text-white overflow-hidden flex items-center min-h-[50vh] py-28">
     
     {{-- ------------------------------------------------------------ --}}
-    {{-- BACKGROUND IMAGE LAYER --}}
+    {{-- BACKGROUND IMAGE LAYER (IMPROVED FOR PARALLAX & VS CODE) --}}
     {{-- ------------------------------------------------------------ --}}
-    <div class="absolute inset-0 z-0">
-        {{-- Badilisha hapa kuweka picha yako. Mfano: src="{{ asset('images/news-bg.jpg') }}" --}}
-        <img src="{{ asset('images/news-bg.jpg') }}"
-             alt="News Background" 
-             class="w-full h-full object-cover">
-             
+    <div class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat bg-fixed" style="background-image: url('<?php echo asset('images/news-bg.jpg'); ?>');">
         {{-- Gradient Overlay: Giza kushoto ili maneno yasomeke, uwazi kulia picha ionekane --}}
         <div class="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-sky-950/80 to-transparent"></div>
     </div>
@@ -128,15 +123,37 @@
 
                     </div>
 
-                    {{-- Volunteer CTA --}}
-                    <div class="mt-10 p-8 bg-sky-900 rounded-3xl text-white relative overflow-hidden">
-                        <div class="absolute -right-4 -top-4 w-24 h-24 bg-sky-500/20 rounded-full blur-xl"></div>
+                    {{-- ============================================================ --}}
+                    {{-- VOLUNTEER CTA (GOOGLE FORMS IN SIDEBAR) --}}
+                    {{-- ============================================================ --}}
+                    <div class="mt-10 bg-gradient-to-br from-sky-800 to-sky-950 rounded-3xl p-8 text-white relative overflow-hidden group shadow-lg">
+                        
+                        {{-- Background Decoration --}}
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-sky-500/20 rounded-bl-full -z-10 group-hover:bg-sky-500/30 transition-colors duration-500"></div>
+                        <div class="absolute bottom-0 left-0 w-24 h-24 bg-orange-500/10 rounded-tr-full -z-10"></div>
+                        
                         <div class="relative z-10 text-center">
-                            <h5 class="font-bold text-lg mb-2">Be a Volunteer</h5>
-                            <p class="text-xs text-sky-200/80 mb-6 font-light leading-relaxed">Join our team on our next outreach campaign and make a real difference.</p>
-                            <a href="/contact" class="block bg-orange-500 text-white text-xs font-bold py-3.5 rounded-xl hover:bg-orange-400 transition shadow-lg uppercase tracking-widest">Register Now</a>
+                            <div class="w-14 h-14 mx-auto bg-sky-700/50 rounded-xl flex items-center justify-center mb-5 backdrop-blur-sm border border-sky-600/50 shadow-inner">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-sky-200">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+                                </svg>
+                            </div>
+                            
+                            <h5 class="font-black text-xl mb-3">Be a Volunteer</h5>
+                            <p class="text-xs text-sky-200/90 mb-7 font-light leading-relaxed">Join our team on our next outreach campaign and make a real difference in the community.</p>
+                            
+                            {{-- BUTTON YA GOOGLE FORM (IMEREKEBISHWA KUWEKA QUOTES KWENYE HREF) --}}
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdEKp_UuyLFG-Ph6otPrip364J7oUPGXHUg78PgJRYv0pG5Mg/viewform?usp=publish-editor" 
+                               target="_blank" 
+                               rel="noopener noreferrer" 
+                               class="flex items-center justify-center w-full bg-orange-500 hover:bg-orange-600 text-white text-xs font-black py-4 px-4 rounded-xl transition duration-300 shadow-lg shadow-orange-500/30 uppercase tracking-widest group-hover:-translate-y-1">
+                                Register Now
+                                {{-- Kijikishale (External Link Icon) --}}
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            </a>
                         </div>
                     </div>
+
                 </div>
             </div>
 

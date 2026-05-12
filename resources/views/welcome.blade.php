@@ -8,14 +8,9 @@
 <section class="relative bg-sky-950 text-white overflow-hidden min-h-[92vh] flex items-center justify-center">
 
     {{-- ------------------------------------------------------------ --}}
-    {{-- THE BACKGROUND IMAGE LAYER --}}
+    {{-- THE BACKGROUND IMAGE LAYER (IMPROVED FOR PARALLAX EFFECT) --}}
     {{-- ------------------------------------------------------------ --}}
-    <div class="absolute inset-0 z-0">
-        {{-- Badilisha hapa kuweka picha yako --}}
-        <img src="{{ asset('images/home-bg.jpg') }}"
-             alt="Background"
-             class="w-full h-full object-cover">
-
+    <div class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat bg-fixed" style="background-image: url('<?php echo asset('images/home-bg.jpg'); ?>');">
         {{-- Gradient Overlay --}}
         <div class="absolute inset-0 bg-gradient-to-br from-sky-950/90 via-sky-900/80 to-slate-900/90"></div>
     </div>

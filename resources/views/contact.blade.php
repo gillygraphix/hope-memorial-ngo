@@ -8,14 +8,9 @@
 <section class="relative bg-sky-950 text-white overflow-hidden flex items-center min-h-[50vh] py-28">
     
     {{-- ------------------------------------------------------------ --}}
-    {{-- BACKGROUND IMAGE LAYER --}}
+    {{-- BACKGROUND IMAGE LAYER (IMPROVED FOR PARALLAX & VS CODE) --}}
     {{-- ------------------------------------------------------------ --}}
-    <div class="absolute inset-0 z-0">
-        {{-- Badilisha hapa kuweka picha yako. Mfano: src="{{ asset('images/contact-bg.jpg') }}" --}}
-        <img src="{{ asset('images/contact-bg.jpg') }}"
-             alt="Contact Background" 
-             class="w-full h-full object-cover">
-             
+    <div class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat bg-fixed" style="background-image: url('<?php echo asset('images/contact-bg.jpg'); ?>');">
         {{-- Gradient Overlay: Giza kushoto ili maneno yasomeke, uwazi kulia picha ionekane --}}
         <div class="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-sky-950/80 to-transparent"></div>
     </div>
@@ -68,6 +63,7 @@
 
                 {{-- Contact Details --}}
                 <div class="space-y-5">
+                    {{-- Location --}}
                     <div class="flex items-start space-x-5 bg-slate-50 border border-slate-100 rounded-3xl p-7 hover:border-sky-200 hover:bg-sky-50 transition-all duration-300 shadow-sm">
                         <div class="w-12 h-12 bg-sky-600 rounded-2xl flex items-center justify-center shrink-0 shadow-md shadow-sky-600/20">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-white">
@@ -77,11 +73,12 @@
                         </div>
                         <div>
                             <p class="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-1">Our Location</p>
-                            <p class="font-black text-slate-800 text-lg">Moshono, Arusha, Tanzania</p>
+                            <p class="font-black text-slate-800 text-lg">Mto wa Mbu, Arusha, Tanzania</p>
                             <p class="text-slate-500 text-sm mt-1">Operational Area: Mto wa Mbu, Monduli District, Arusha Region</p>
                         </div>
                     </div>
 
+                    {{-- Emails --}}
                     <div class="flex items-start space-x-5 bg-slate-50 border border-slate-100 rounded-3xl p-7 hover:border-sky-200 hover:bg-sky-50 transition-all duration-300 shadow-sm">
                         <div class="w-12 h-12 bg-orange-500 rounded-2xl flex items-center justify-center shrink-0 shadow-md shadow-orange-500/20">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-white">
@@ -89,12 +86,18 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-1">Email Address</p>
-                            <a href="mailto:info@hopememorial.org" class="font-black text-slate-800 hover:text-sky-600 transition text-lg">info@hopememorial.org</a>
-                            <p class="text-slate-500 text-sm mt-1">We respond within 48 hours on business days.</p>
+                            <p class="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-2">Email Addresses</p>
+                            <div class="flex flex-col space-y-1">
+                                <a href="mailto:info@hopememorial.org" class="font-black text-slate-800 hover:text-sky-600 transition text-[15px]">info@hopememorial.org</a>
+                                <a href="mailto:director@hopememorial.org" class="font-black text-slate-800 hover:text-sky-600 transition text-[15px]">director@hopememorial.org</a>
+                                <a href="mailto:donations@hopememorial.org" class="font-black text-slate-800 hover:text-sky-600 transition text-[15px]">donations@hopememorial.org</a>
+                                <a href="mailto:appointments@hopememorial.org" class="font-black text-slate-800 hover:text-sky-600 transition text-[15px]">appointments@hopememorial.org</a>
+                            </div>
+                            <p class="text-slate-500 text-sm mt-3">We respond within 48 hours on business days.</p>
                         </div>
                     </div>
 
+                    {{-- Phones --}}
                     <div class="flex items-start space-x-5 bg-slate-50 border border-slate-100 rounded-3xl p-7 hover:border-sky-200 hover:bg-sky-50 transition-all duration-300 shadow-sm">
                         <div class="w-12 h-12 bg-sky-700 rounded-2xl flex items-center justify-center shrink-0 shadow-md shadow-sky-700/20">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-white">
@@ -102,47 +105,12 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-1">Phone Number</p>
-                            <a href="tel:+255700000000" class="font-black text-slate-800 hover:text-sky-600 transition text-lg">+255 700 000 000</a>
-                            <p class="text-slate-500 text-sm mt-1">Available Monday – Friday, 8:00 AM – 5:00 PM EAT.</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start space-x-5 bg-slate-50 border border-slate-100 rounded-3xl p-7 hover:border-sky-200 hover:bg-sky-50 transition-all duration-300 shadow-sm">
-                        <div class="w-12 h-12 bg-orange-500 rounded-2xl flex items-center justify-center shrink-0 shadow-md shadow-orange-500/20">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-white">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-1">Registration</p>
-                            <p class="font-black text-slate-800 text-lg">NGO Reg. No: 01NGO/R/3988</p>
-                            <p class="text-slate-500 text-sm mt-1">Registered under the Tanzania Non-Governmental Organizations Act, 2002 on 26 February 2026.</p>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Key Contacts --}}
-                <div class="space-y-4 pt-4">
-                    <p class="text-[11px] font-black uppercase tracking-[0.3em] text-slate-400">Key Contacts</p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="bg-sky-950 text-white rounded-3xl p-7 space-y-3 shadow-lg">
-                            <div class="text-sky-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                                </svg>
+                            <p class="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-2">Phone Numbers</p>
+                            <div class="flex flex-col space-y-1">
+                                <a href="tel:+255763117674" class="font-black text-slate-800 hover:text-sky-600 transition text-[17px]">+255 763 117 674</a>
+                                <a href="tel:+255622041699" class="font-black text-slate-800 hover:text-sky-600 transition text-[17px]">+255 622 041 699</a>
                             </div>
-                            <p class="font-black text-lg leading-snug">Dr. Theresia Dawas</p>
-                            <p class="text-[10px] font-black uppercase tracking-widest text-sky-400">Founder & Executive Director</p>
-                        </div>
-                        <div class="bg-sky-800 text-white rounded-3xl p-7 space-y-3 shadow-lg">
-                            <div class="text-sky-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                                </svg>
-                            </div>
-                            <p class="font-black text-lg leading-snug">Dr. Michael Mahole</p>
-                            <p class="text-[10px] font-black uppercase tracking-widest text-sky-400">Founder & Co-Director</p>
+                            <p class="text-slate-500 text-sm mt-3">Available Monday – Friday, 8:00 AM – 5:00 PM EAT.</p>
                         </div>
                     </div>
                 </div>

@@ -8,13 +8,9 @@
 <section class="relative bg-sky-950 text-white overflow-hidden flex items-center min-h-[60vh] py-32">
     
     {{-- ------------------------------------------------------------ --}}
-    {{-- BACKGROUND IMAGE LAYER --}}
+    {{-- BACKGROUND IMAGE LAYER (IMPROVED FOR PARALLAX & VS CODE) --}}
     {{-- ------------------------------------------------------------ --}}
-    <div class="absolute inset-0 z-0">
-        <img src="{{ asset('images/donate-bg.jpg') }}" 
-             alt="Donate Background" 
-             class="w-full h-full object-cover">
-             
+    <div class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat bg-fixed" style="background-image: url('<?php echo asset('images/donate-bg.jpg'); ?>');">
         {{-- Gradient Overlay: Giza kushoto ili maneno yasomeke, uwazi kulia picha ionekane --}}
         <div class="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-sky-950/80 to-transparent"></div>
     </div>
@@ -100,7 +96,7 @@
             <div class="bg-gradient-to-br from-sky-700 to-sky-950 rounded-3xl p-10 text-white text-center space-y-6 shadow-sm">
                 <div class="w-14 h-14 mx-auto text-sky-300">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 01-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.397.165-.71-.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 01-.12-1.45l.527-.737c.25-.35.273-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.107-1.204l-.527-.738a1.125 1.125 0 01.12-1.45l.773-.773a1.125 1.125 0 011.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143-.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 01-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.397.165-.71-.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 01-.12-1.45l.527-.737c.25-.35.273-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.107-1.204l-.527-.738a1.125 1.125 0 01.12-1.45l.773-.773a1.125 1.125 0 011.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894z" />
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                 </div>
@@ -115,105 +111,79 @@
 </section>
 
 {{-- ============================================================ --}}
-{{-- HOW TO DONATE (Mobile Money & Bank Transfer) --}}
+{{-- HOW TO DONATE (Bank Transfer Details) --}}
 {{-- ============================================================ --}}
 <section id="how-to-donate" class="py-24 bg-slate-50 border-t border-slate-200">
-    <div class="container mx-auto px-4 max-w-5xl">
+    <div class="container mx-auto px-4 max-w-4xl">
         <div class="text-center mb-16">
             <p class="text-[11px] font-black uppercase tracking-[0.3em] text-orange-500 mb-4">Make Your Impact</p>
             <h2 class="text-4xl sm:text-5xl font-black text-slate-800 tracking-normal leading-snug">
                 How to Donate
             </h2>
             <p class="text-slate-500 mt-4 max-w-2xl mx-auto leading-relaxed text-lg">
-                Your contribution directly funds life-saving care. You can send your donation securely through mobile money networks or direct bank transfer.
+                Your contribution directly funds life-saving care. You can send your donation securely through direct bank transfer to our official foundation account below.
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {{-- BANK TRANSFER CARD (Full Width & Centered) --}}
+        <div class="bg-white rounded-3xl p-8 sm:p-12 border border-slate-200 shadow-xl relative overflow-hidden group hover:border-sky-300 transition-all duration-300">
+            {{-- Background Decoration --}}
+            <div class="absolute top-0 right-0 w-64 h-64 bg-sky-50 rounded-bl-full -z-10 group-hover:bg-sky-100 transition-colors duration-500"></div>
             
-            {{-- MOBILE MONEY CARD --}}
-            <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm relative overflow-hidden group hover:shadow-lg transition-all duration-300 hover:border-sky-200">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-sky-50 rounded-bl-full -z-10 group-hover:bg-sky-100 transition-colors duration-500"></div>
-                
-                <div class="flex items-center space-x-4 mb-8">
-                    <div class="w-14 h-14 bg-sky-100 text-sky-600 rounded-2xl flex items-center justify-center">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="text-2xl font-black text-slate-800 tracking-normal">Mobile Money</h3>
-                        <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mt-1">Lipa Namba</p>
-                    </div>
+            <div class="flex items-center space-x-5 mb-10">
+                <div class="w-16 h-16 bg-sky-100 text-sky-600 rounded-2xl flex items-center justify-center shrink-0">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
+                    </svg>
                 </div>
-
-                <div class="space-y-6">
-                    {{-- Lipa Namba Item --}}
-                    <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 flex justify-between items-center group/item hover:border-sky-300 transition-colors">
-                        <div>
-                            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">M-Pesa / Tigo Pesa / Airtel / Halopesa</p>
-                            <p class="text-2xl font-black text-slate-800 tracking-widest font-mono" id="lipanamba-1">12345678</p>
-                            <p class="text-xs font-bold text-sky-600 mt-1 uppercase tracking-wider">Hope Memorial Spark Foundation</p>
-                        </div>
-                        <button onclick="copyText('lipanamba-1')" class="w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center text-slate-400 hover:text-sky-600 hover:border-sky-600 transition-colors focus:outline-none shrink-0" title="Copy Number">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
-                        </button>
-                    </div>
-                    
-                    <p class="text-xs text-slate-500 font-light leading-relaxed text-center px-4">
-                        To donate, go to your mobile money menu, select 'Pay Merchant' (Lipa kwa Simu), enter the Lipa Namba above, and input your desired amount.
-                    </p>
+                <div>
+                    <h3 class="text-3xl font-black text-slate-800 tracking-normal">Bank Transfer</h3>
+                    <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mt-1">Local & International Deposits</p>
                 </div>
             </div>
 
-            {{-- BANK TRANSFER CARD --}}
-            <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm relative overflow-hidden group hover:shadow-lg transition-all duration-300 hover:border-orange-200">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-orange-50 rounded-bl-full -z-10 group-hover:bg-orange-100 transition-colors duration-500"></div>
-                
-                <div class="flex items-center space-x-4 mb-8">
-                    <div class="w-14 h-14 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
-                        </svg>
-                    </div>
+            <div class="space-y-6">
+                {{-- Account Number Row --}}
+                <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 sm:p-7 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-sky-300 transition-colors">
                     <div>
-                        <h3 class="text-2xl font-black text-slate-800 tracking-normal">Bank Transfer</h3>
-                        <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mt-1">Direct Deposit</p>
+                        <p class="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-1">Account Number</p>
+                        <p class="text-2xl sm:text-3xl font-black text-slate-800 tracking-widest font-mono" id="bank-acc">43810029215</p>
+                        <p class="text-sm font-bold text-sky-600 mt-1 uppercase tracking-wider">National Microfinance Bank Ltd (NMB)</p>
                     </div>
+                    <button onclick="copyText('bank-acc')" class="w-12 h-12 bg-white border border-slate-200 rounded-full flex items-center justify-center text-slate-500 hover:text-sky-600 hover:border-sky-600 hover:shadow-md transition-all focus:outline-none shrink-0" title="Copy Account Number">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                    </button>
                 </div>
 
-                <div class="space-y-4">
-                    {{-- CRDB Account --}}
-                    <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 flex justify-between items-center hover:border-orange-300 transition-colors">
-                        <div>
-                            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">CRDB Bank</p>
-                            <p class="text-lg sm:text-xl font-black text-slate-800 tracking-widest font-mono" id="bank-crdb">015XXXXXXXXXX</p>
-                            <p class="text-[11px] font-bold text-orange-600 mt-1 uppercase tracking-wider">Hope Memorial Spark Foundation</p>
-                        </div>
-                        <button onclick="copyText('bank-crdb')" class="w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center text-slate-400 hover:text-orange-600 hover:border-orange-600 transition-colors focus:outline-none shrink-0" title="Copy Number">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
-                        </button>
+                {{-- SWIFT Code Row --}}
+                <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 sm:p-7 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-sky-300 transition-colors">
+                    <div>
+                        <p class="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-1">SWIFT / BIC Code</p>
+                        <p class="text-xl sm:text-2xl font-black text-slate-800 tracking-widest font-mono" id="swift-code">NMIBTZTZ</p>
+                        <p class="text-xs font-bold text-slate-500 mt-1 uppercase tracking-wider">For International Transfers</p>
                     </div>
+                    <button onclick="copyText('swift-code')" class="w-12 h-12 bg-white border border-slate-200 rounded-full flex items-center justify-center text-slate-500 hover:text-sky-600 hover:border-sky-600 hover:shadow-md transition-all focus:outline-none shrink-0" title="Copy SWIFT Code">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                    </button>
+                </div>
 
-                    {{-- NMB Account --}}
-                    <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 flex justify-between items-center hover:border-orange-300 transition-colors">
-                        <div>
-                            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">NMB Bank</p>
-                            <p class="text-lg sm:text-xl font-black text-slate-800 tracking-widest font-mono" id="bank-nmb">205XXXXXXXXX</p>
-                            <p class="text-[11px] font-bold text-orange-600 mt-1 uppercase tracking-wider">Hope Memorial Spark Foundation</p>
-                        </div>
-                        <button onclick="copyText('bank-nmb')" class="w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center text-slate-400 hover:text-orange-600 hover:border-orange-600 transition-colors focus:outline-none shrink-0" title="Copy Number">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
-                        </button>
+                {{-- Additional Details Grid --}}
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-2">
+                    <div class="bg-white border border-slate-100 rounded-2xl p-5 sm:p-6 shadow-sm">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Account Name</p>
+                        <p class="text-sm font-black text-slate-800 uppercase leading-snug">Hope Memorial Spark Foundation</p>
+                    </div>
+                    <div class="bg-white border border-slate-100 rounded-2xl p-5 sm:p-6 shadow-sm">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Branch Name</p>
+                        <p class="text-sm font-black text-slate-800 uppercase leading-snug">Mto wa Mbu - Arusha</p>
                     </div>
                 </div>
             </div>
-
         </div>
         
         {{-- Toast Notification kwa ajili ya 'Copy' action --}}
         <div id="copy-toast" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full text-sm font-bold shadow-2xl opacity-0 transition-opacity duration-300 pointer-events-none z-50">
-            Number copied to clipboard!
+            Text copied to clipboard!
         </div>
 
     </div>
@@ -248,7 +218,8 @@
                 <label class="text-[11px] font-black uppercase tracking-widest text-slate-500">Topic</label>
                 <select class="w-full bg-white border border-slate-200 rounded-xl px-5 py-4 text-sm text-slate-700 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all appearance-none cursor-pointer">
                     <option value="">Select an option...</option>
-                    <option>I have made a transfer via Mobile Money/Bank</option>
+                    {{-- Nimebadilisha option hii ili isitaje Mobile Money tena --}}
+                    <option>I have made a Bank Transfer</option>
                     <option>I want to Partner with the Foundation</option>
                     <option>I want to provide in-kind donations (supplies, etc.)</option>
                     <option>Other inquiries</option>

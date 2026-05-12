@@ -8,14 +8,9 @@
 <section class="relative bg-sky-950 text-white overflow-hidden flex items-center min-h-[60vh] py-28">
     
     {{-- ------------------------------------------------------------ --}}
-    {{-- BACKGROUND IMAGE LAYER --}}
+    {{-- BACKGROUND IMAGE LAYER (IMPROVED FOR PARALLAX & VS CODE) --}}
     {{-- ------------------------------------------------------------ --}}
-    <div class="absolute inset-0 z-0">
-        {{-- Badilisha hapa kuweka picha yako. Mfano: src="{{ asset('images/impact-bg.jpg') }}" --}}
-        <img src="{{ asset('images/impact-bg.jpg') }}" 
-             alt="Impact Background" 
-             class="w-full h-full object-cover">
-             
+    <div class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat bg-fixed" style="background-image: url('<?php echo asset('images/impact-bg.jpg'); ?>');">
         {{-- Gradient Overlay: Giza kushoto ili maneno yasomeke, uwazi kulia picha ionekane --}}
         <div class="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-sky-950/80 to-transparent"></div>
     </div>

@@ -3,7 +3,7 @@
 @section('content')
 
 {{-- ============================================================ --}}
-{{-- PHP LOGIC: KUSOMA PICHA LIVE (BILA CACHE) --}}
+{{-- PHP LOGIC: KUSOMA PICHA LIVE (IMEREKEBISHWA KWA AJILI YA cPANEL) --}}
 {{-- ============================================================ --}}
 @php
     $categories = [
@@ -14,32 +14,38 @@
         'team' => 'Team'
     ];
     
-    // TUMEONDOA CACHE ILI PICHA ZISOMEKE HAPO HAPO (LIVE)
-    // Lakini tumebakiza 'DirectoryIterator' ili kuzuia Error ya 60 Seconds
     $galleryImages = [];
     
     foreach($categories as $folder => $label) {
-        $path = public_path('images/gallery/' . $folder);
         
-        if(is_dir($path)) {
-            $dir = new \DirectoryIterator($path);
-            foreach ($dir as $fileinfo) {
-                if (!$fileinfo->isDot() && !$fileinfo->isDir()) {
-                    $ext = strtolower($fileinfo->getExtension());
-                    if(in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
-                        $galleryImages[] = [
-                            'url' => asset('images/gallery/' . $folder . '/' . $fileinfo->getFilename()),
-                            'category' => $folder,
-                            'label' => $label,
-                            'filename' => $fileinfo->getFilename()
-                        ];
+        // REKEBISHO MUHIMU KWA cPANEL:
+        // Badala ya public_path(), tunatumia DOCUMENT_ROOT ambayo inaelekeza moja kwa moja kwenye public_html
+        $path = rtrim($_SERVER['DOCUMENT_ROOT'], '/') . '/images/gallery/' . $folder;
+        
+        // Tunaangalia kama njia hii ipo kweli
+        if(file_exists($path) && is_dir($path)) {
+            try {
+                $dir = new \DirectoryIterator($path);
+                foreach ($dir as $fileinfo) {
+                    if (!$fileinfo->isDot() && !$fileinfo->isDir()) {
+                        $ext = strtolower($fileinfo->getExtension());
+                        if(in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
+                            $galleryImages[] = [
+                                // URL ya picha kwa matumizi ya mtandaoni inabaki kuwa ileile (asset)
+                                'url' => asset('images/gallery/' . $folder . '/' . $fileinfo->getFilename()),
+                                'category' => $folder,
+                                'label' => $label,
+                                'filename' => $fileinfo->getFilename()
+                            ];
+                        }
                     }
                 }
+            } catch (\Exception $e) {
+                // Kama kuna error ya permissions, itadakwa hapa na script haitacrush.
             }
         }
     }
     
-    // Tunacopy list na kuichanganya (shuffle) ili muonekano uwe mzuri kwa "ALL"
     $displayImages = $galleryImages;
     shuffle($displayImages);
 @endphp
@@ -48,12 +54,15 @@
 {{-- PAGE HERO --}}
 {{-- ============================================================ --}}
 <section class="relative bg-sky-950 text-white overflow-hidden flex items-center min-h-[50vh] py-28">
-    <div class="absolute inset-0 z-0">
-        <img src="{{ asset('images/gallery-bg.jpg') }}" 
-             alt="Gallery Background" 
-             class="w-full h-full object-cover">
+    
+    {{-- ------------------------------------------------------------ --}}
+    {{-- BACKGROUND IMAGE LAYER (IMPROVED FOR PARALLAX & VS CODE) --}}
+    {{-- ------------------------------------------------------------ --}}
+    <div class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat bg-fixed" style="background-image: url('<?php echo asset('images/gallery-bg.jpg'); ?>');">
+        {{-- Gradient Overlay: Giza kushoto ili maneno yasomeke, uwazi kulia picha ionekane --}}
         <div class="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-sky-950/80 to-transparent"></div>
     </div>
+    {{-- ------------------------------------------------------------ --}}
 
     <div class="absolute inset-0 opacity-10 z-10 pointer-events-none">
         <div class="absolute inset-0" style="background-image: radial-gradient(circle, #ffffff 1px, transparent 1px); background-size: 40px 40px;"></div>

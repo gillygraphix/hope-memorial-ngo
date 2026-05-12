@@ -231,7 +231,7 @@
     </header>
 
     {{-- ============================================================ --}}
-    {{-- INSTALL APP BUTTON (NIMEREKEBISHA: GLASSMORPHISM & KUSHOTO) --}}
+    {{-- INSTALL APP BUTTON --}}
     {{-- ============================================================ --}}
     <button id="installAppBtn" class="hidden items-center justify-center fixed bottom-8 left-7 lg:bottom-10 lg:left-10 z-[9998] bg-white/80 backdrop-blur-xl border border-white/60 text-slate-700 hover:bg-white hover:text-sky-600 font-black text-[10px] lg:text-[11px] uppercase tracking-widest px-5 py-2.5 lg:px-6 lg:py-3 rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 gap-2 hover:-translate-y-1" aria-label="Install App">
         <svg class="w-4 h-4 text-sky-500 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
@@ -283,6 +283,7 @@
                 <div>
                     <h4 class="text-white font-bold uppercase text-[11px] tracking-[0.2em] mb-8 border-l-4 border-orange-500 pl-4">Contact Info</h4>
                     <ul class="space-y-6 text-sm text-slate-300">
+                        {{-- Location --}}
                         <li class="flex items-start">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-orange-500 mr-4 mt-0.5 shrink-0">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -290,8 +291,29 @@
                             </svg>
                             <span>Mto wa Mbu, Arusha, Tanzania</span>
                         </li>
-                        <li class="flex items-center text-white font-bold">
-                            info@hopememorial.org
+                        
+                        {{-- Phones --}}
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-orange-500 mr-4 mt-0.5 shrink-0">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.48-4.18-7.076-7.076l1.293-.97c.362-.271.527-.733.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+                            </svg>
+                            <div class="flex flex-col space-y-1.5 text-[13px] text-white font-bold tracking-wider">
+                                <a href="tel:+255763117674" class="hover:text-sky-400 transition-colors">+255 763 117 674</a>
+                                <a href="tel:+255622041699" class="hover:text-sky-400 transition-colors">+255 622 041 699</a>
+                            </div>
+                        </li>
+
+                        {{-- Emails --}}
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-orange-500 mr-4 mt-0.5 shrink-0">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.909A2.25 2.25 0 012.25 6.993V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25" />
+                            </svg>
+                            <div class="flex flex-col space-y-1.5 text-[12px] font-medium text-slate-300">
+                                <a href="mailto:info@hopememorial.org" class="hover:text-white transition-colors">info@hopememorial.org</a>
+                                <a href="mailto:director@hopememorial.org" class="hover:text-white transition-colors">director@hopememorial.org</a>
+                                <a href="mailto:donations@hopememorial.org" class="hover:text-white transition-colors">donations@hopememorial.org</a>
+                                <a href="mailto:appointments@hopememorial.org" class="hover:text-white transition-colors">appointments@hopememorial.org</a>
+                            </div>
                         </li>
                     </ul>
                 </div>
